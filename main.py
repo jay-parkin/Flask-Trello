@@ -15,4 +15,3 @@ def create_app(): # create the flask within a def
     jwt.init_app(app)
 
     return app
-
