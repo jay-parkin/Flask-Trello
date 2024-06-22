@@ -6,6 +6,8 @@ from init import db, ma, bcrypt, jwt # import from init.py
 def create_app(): # create the flask within a def
     app = Flask(__name__)
 
+    app.json.sort_keys = False
+
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
     app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 
