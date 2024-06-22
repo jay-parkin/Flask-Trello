@@ -23,4 +23,6 @@ def create_app(): # create the flask within a def
     from controllers.card_controller import cards_bp
     app.register_blueprint(cards_bp)
 
+    # changes
+    
     return app
