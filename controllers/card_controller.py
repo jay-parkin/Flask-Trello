@@ -63,24 +63,26 @@ def create_card():
     # respond
     return card_schema.dump(card)
 
+# /cards/<id> - DELETE - delete a card
 @cards_bp.route("/<int:card_id>", methods=["DELETE"])
 @jwt_required()
 def delete_card(card_id):
-    # check whether the user is an admin or not
-    is_admin = authorise_as_admin()
-    if not is_admin:
-        return {"error": "User is not authorised to perform this action."}, 403
-
-    # fetch card from database
-    stmt = db.select(Card).filter_by(id = card_id)
+    # fetch the card from the database
+    stmt = db.select(Card).filter_by(id=card_id)
     card = db.session.scalar(stmt)
-    
-    # if card exists
+
+    # if card
     if card:
+        # check whether the user is an admin or not
+        is_admin = authorise_as_admin()
+
+        if not is_admin and str(card.user_id) != get_jwt_identity():
+            return {"error": "User is not authorised to perform this action."}, 403
+        
         # delete the card
         db.session.delete(card)
         db.session.commit()
-
+        
         return {"message": f"Card '{card.title}' deleted successfully"}
     # else
     else:
