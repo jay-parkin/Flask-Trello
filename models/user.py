@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Regexp
 
 class User(db.Model):
     # define the table name
@@ -22,6 +23,9 @@ class UserSchema(ma.Schema):
     # a user can have multiple cards and comments
     cards = fields.List(fields.Nested("CardSchema", exclude=["user"]))
     comments = fields.List(fields.Nested('CommentSchema', exclude=["user"]))
+
+    email = fields.String(required = True, validate = Regexp("^\S+@\S+\.\S+$", error = "Invalid Email Format"))
+    password = fields.String(required=True, validate=Regexp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", error="Minimum eight characters, at least one letter and one number"))
 
     class Meta:
         fields = ("id", "name", "email", "password", "is_admin", "cards", "comments")

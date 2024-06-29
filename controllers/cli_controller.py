@@ -58,7 +58,7 @@ def seed_tables():
             title = "Title 1",
             description = "Description 1",
             date = date.today(),
-            status = "Todo",
+            status = "To do",
             priority = "Urgent",
             user = users[1]
         ),
