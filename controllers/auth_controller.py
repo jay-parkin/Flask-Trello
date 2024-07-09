@@ -5,6 +5,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 
 from models.user import User, user_schema, UserSchema
 from init import bcrypt, db
+from utils import auth_as_admin_decorator
 
 # handles errors
 from sqlalchemy.exc import IntegrityError
@@ -99,3 +100,27 @@ def update_user():
     else:
         # return an error
         return {"error": "User does not exist"}
+    
+# /auth/users/user_id - DELETE
+
+@auth_bp.route("/users/<int:user_id>", methods=["DELETE"])
+@jwt_required()
+@auth_as_admin_decorator
+def delete_user(user_id):
+    # find the user with the id from DB
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+
+    # if user exists
+    if user:
+        # delete the user
+        db.session.delete(user)
+        db.session.commit()
+
+        # return a message
+        return {"message": f"User with id {user_id} deleted"}
+
+    # else
+    else:
+        # return error saying user does not exist
+        return {"error": f"User with id {user_id} not found"}, 404
