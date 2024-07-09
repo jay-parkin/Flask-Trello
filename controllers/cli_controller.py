@@ -29,25 +29,14 @@ def seed_tables():
     # list of user instances
     users = [
         User(
-            name="Admin",
-            email="admin1@email.com",
+            email="admin@email.com",
             password=bcrypt.generate_password_hash("123456").decode("utf-8"),
             is_admin=True
         ),
         User(
             name="User 1",
             email="user1@email.com",
-            password=bcrypt.generate_password_hash("123456").decode("utf-8")
-        ),
-        User(
-            name="User 2",
-            email="user2@email.com",
-            password=bcrypt.generate_password_hash("123456").decode("utf-8")
-        ),
-        User(
-            name="User 3",
-            email="user3@email.com",
-            password=bcrypt.generate_password_hash("123456").decode("utf-8")
+            password=bcrypt.generate_password_hash("123456").decode("utf-8"),
         )
     ]
 
@@ -55,28 +44,28 @@ def seed_tables():
 
     cards = [
         Card(
-            title = "Title 1",
-            description = "Description 1",
-            date = date.today(),
-            status = "To do",
-            priority = "Urgent",
-            user = users[1]
+            title="Card 1",
+            description="Card 1 desc",
+            date=date.today(),
+            status="To Do",
+            priority="High",
+            user=users[0]
         ),
         Card(
-            title = "Title 2",
-            description = "Description 2",
-            date = date.today(),
-            status = "Done",
-            priority = "Do whenever",
-            user = users[2]
+            title="Card 2",
+            description="Card 2 desc",
+            date=date.today(),
+            status="Ongoing",
+            priority="Low",
+            user=users[0]
         ),
         Card(
-            title = "Title 3",
-            description = "Description 3",
-            date = date.today(),
-            status = "Processing",
-            priority = "Eh",
-            user= users[1]
+            title="Card 3",
+            description="Card 3 desc",
+            date=date.today(),
+            status="Done",
+            priority="Medium",
+            user=users[1]
         )
     ]
 
@@ -84,24 +73,23 @@ def seed_tables():
 
     comments = [
         Comment(
-            message = "Comment 1",
-            date = date.today(),
-            user = users[1],
-            card = cards[0]
+            message="Comment 1",
+            date=date.today(),
+            user=users[1],
+            card=cards[0]
         ),
         Comment(
-            message = "Comment 2",
-            date = date.today(),
-            user = users[0],
-            card = cards[0]
+            message="Comment 2",
+            date=date.today(),
+            user=users[0],
+            card=cards[0]
         ),
         Comment(
-            message = "Comment 3",
-            date = date.today(),
-            user = users[0],
-            card = cards[2]
-        ),
-
+            message="Comment 3",
+            date=date.today(),
+            user=users[0],
+            card=cards[2]
+        )
     ]
 
     db.session.add_all(comments)
